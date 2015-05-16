@@ -25,9 +25,9 @@ namespace Shade
         {
             InitializeComponent();
 
-            string shadetext = ShadeStream.GetShadeUnicodeText(@"C:\Development\CSharp\Shade\shadeimage.png");
+            //string shadetext = ShadeStream.GetShadeUnicodeText(@"C:\Development\CSharp\Shade\shadeimage.png");
 
-            ShadeStream.SetShadeUnicodeText(@"C:\Development\CSharp\Shade\shadeimage.png", "Simon Merlung");
+            //ShadeStream.SetShadeUnicodeText(@"C:\Development\CSharp\Shade\shadeimage.png", "Simon Merlung");
         }
     }
 }

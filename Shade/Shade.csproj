@@ -68,6 +68,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Objects\ImageStream.cs" />
+    <Compile Include="Objects\Shader.cs" />
     <Compile Include="Objects\ShadeStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
