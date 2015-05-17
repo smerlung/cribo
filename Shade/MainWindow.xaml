@@ -1,23 +1,33 @@
 ﻿<Window x:Class="Shade.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525" WindowState="Maximized">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Padding" Value="5" />
+        </Style>
+    </Window.Resources>
     <DockPanel>
-        <Menu DockPanel.Dock="Top" IsMainMenu="True">
-                <MenuItem Header="_File">
-                <MenuItem Header="_Open" Click="OpenClick"/>
-                <MenuItem Header="_Save" Click="SaveClick" />
-                <MenuItem Header="E_xit" Click="ExitClick"/>
-            </MenuItem>
-        </Menu>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Image Stretch="Uniform" Name="imageviewer"></Image>
-        <TextBox AcceptsReturn="True" TextWrapping="Wrap" Grid.Column="1" Name="texteditor"></TextBox>
-    </Grid>
+        <Border DockPanel.Dock="Top" BorderThickness="1" BorderBrush="Black">
+            <StackPanel  Orientation="Horizontal">
+                <Button Click="OpenClick">Open</Button>
+                <Button Click="SaveClick">Save</Button>
+                <Button Click="EncryptClick">Encrypt</Button>
+                <Button Click="DecryptClick">Decrypt</Button>
+                <Button Click="ExitClick">Exit</Button>
+                <TextBox Name="txtPassword" Width="300" FontSize="20"></TextBox>
+            </StackPanel>
+        </Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Image Stretch="Uniform" Name="imageviewer"></Image>
+            <TextBox AcceptsReturn="True" TextWrapping="Wrap" Grid.Column="1" Name="texteditor" TextChanged="texteditor_TextChanged"></TextBox>
+        </Grid>
     </DockPanel>
 
 </Window>

@@ -1,4 +1,5 @@
-﻿using Shade.Objects;
+﻿using Microsoft.Win32;
+using Shade.Objects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,11 +24,15 @@ namespace Shade
     public partial class MainWindow : Window
     {
         private string imagepath = "";
+        //private byte[] salt = UnicodeEncoding.UTF8.GetBytes("T]-D`hxf5Ln;a>t#");
+        private byte[] salt = UnicodeEncoding.UTF8.GetBytes("a");
+        private byte[] buffer;
+        private bool isplaintext = true;
 
         public MainWindow()
         {
             InitializeComponent();
-            
+            this.DataContext = this;
         }
 
         private void OpenImage(string imagepath)
@@ -44,15 +49,21 @@ namespace Shade
             }
 
             byte[] data = ImageStream.GetImageBytes(imagepath);
-            string unicode = UnicodeEncoding.UTF8.GetString(ShadeStream.GetShadeBytes(data));
-            this.texteditor.Text = unicode;
+            this.buffer = ShadeStream.GetShadeBytes(data);
+            this.isplaintext = false;
+            this.UpdateEditor();
         }
 
         private void SaveImage(string imagepath)
         {
+            if(this.isplaintext)
+            {
+                MessageBox.Show("You cannot save the data if it is in plaintext mode");
+                return;
+            }
+
             byte[] data = ImageStream.GetImageBytes(imagepath);
-            byte[] unicode = UnicodeEncoding.UTF8.GetBytes(this.texteditor.Text);
-            ShadeStream.SetShadeBytes(data, unicode);
+            ShadeStream.SetShadeBytes(data, this.buffer);
             ImageStream.SetImageBytes(imagepath, data);
         }
 
@@ -63,12 +74,62 @@ namespace Shade
 
         private void OpenClick(object sender, RoutedEventArgs e)
         {
-            this.OpenImage(@"C:\Development\CSharp\Shade\shadeimage.png");
+            OpenFileDialog dlg = new OpenFileDialog();
+            bool? result = dlg.ShowDialog();
+            if (result.HasValue && result.Value)
+            {
+                this.OpenImage(dlg.FileName);
+            }
         }
 
         private void ExitClick(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void EncryptClick(object sender, RoutedEventArgs e)
+        {
+            if (!this.isplaintext)
+            {
+                MessageBox.Show("Data is already encrypted");
+                return;
+            }
+
+            this.buffer = Crypto.Encrypt(this.buffer, this.GetHash());
+            this.isplaintext = false;
+            this.UpdateEditor();
+        }
+
+        private void DecryptClick(object sender, RoutedEventArgs e)
+        {
+            if (this.isplaintext)
+            {
+                MessageBox.Show("Data is not encrypted");
+                return;
+            }
+
+            this.buffer = Crypto.Decrypt(this.buffer, this.GetHash());
+            this.isplaintext = true;
+            this.UpdateEditor();
+        }
+
+        private byte[] GetHash()
+        {
+            byte[] hash = SimpleHash.Create(this.txtPassword.Text, this.salt);
+            return hash;
+        }
+
+        private void UpdateEditor()
+        {
+            this.texteditor.Text = UnicodeEncoding.UTF8.GetString(this.buffer);
+        }
+
+        private void texteditor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (this.isplaintext)
+            {
+                this.buffer = UnicodeEncoding.UTF8.GetBytes(this.texteditor.Text);
+            }
         }
 
     }
