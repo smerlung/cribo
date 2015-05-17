@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Shade.Objects
 {
@@ -13,24 +15,45 @@ namespace Shade.Objects
     {
         public static byte[] GetImageBytes(string imagepath)
         {
-            using (Bitmap bitmap = new Bitmap(imagepath))
+            using (FileStream fs = new FileStream(imagepath, FileMode.Open))
             {
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    bitmap.Save(stream, ImageFormat.Png);
-                    return stream.GetBuffer();
-                }
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.StreamSource = fs;
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.EndInit();
+
+                int stride = image.PixelWidth * 4;
+                int size = image.PixelHeight * stride;
+                byte[] pixels = new byte[size];
+                image.CopyPixels(pixels, stride, 0);
+                return pixels;
             }
+
         }
 
         public static void SetImageBytes(string imagepath, IList<byte> bytes)
         {
-            using (MemoryStream stream = new MemoryStream(bytes.ToArray()))
+            BitmapImage image = new BitmapImage();
+            using (FileStream fs = new FileStream(imagepath, FileMode.Open))
             {
-                using (Bitmap bitmap = new Bitmap(stream))
-                {
-                    bitmap.Save(imagepath, ImageFormat.Png);
-                }
+
+                image.BeginInit();
+                image.StreamSource = fs;
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.EndInit();
+            }
+
+            WriteableBitmap bitmap = new WriteableBitmap(image);
+            bitmap.WritePixels(new Int32Rect(0, 0, image.PixelWidth, image.PixelHeight), bytes.ToArray(), image.PixelWidth * 4, 0);
+
+
+            using (FileStream stream = new FileStream(imagepath, FileMode.Create))
+            {
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                encoder.Save(stream);
+                stream.Close();
             }
         }
     }

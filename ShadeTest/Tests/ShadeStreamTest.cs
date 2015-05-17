@@ -12,7 +12,7 @@ namespace ShadeTest.Tests
         [TestMethod]
         public void GetSetShadeBytesTest()
         {
-            byte[] data = Enumerable.Range(0, 40).Select(n=>(byte)0xff).ToArray();
+            byte[] data = Enumerable.Range(0, 100000).Select(n=>(byte)0xff).ToArray();
             byte[] expected = new byte[] { 1, 2, 3, 4, 5 };
             ShadeStream.SetShadeBytes(data, expected);
             byte[] actual = ShadeStream.GetShadeBytes(data);
@@ -24,7 +24,7 @@ namespace ShadeTest.Tests
         {
             string expected = "Simon Merlung er Bobbys far";
             Random random = new Random();
-            byte[] data = new byte[8*expected.Length];
+            byte[] data = new byte[64000];
             random.NextBytes(data);
             ShadeStream.SetShadeBytes(data, UnicodeEncoding.UTF8.GetBytes(expected));
             string actual = UnicodeEncoding.UTF8.GetString(ShadeStream.GetShadeBytes(data));

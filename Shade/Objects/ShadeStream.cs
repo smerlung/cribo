@@ -15,10 +15,17 @@ namespace Shade.Objects
     {
         public static byte[] GetShadeBytes(IList<byte> data)
         {
+            byte[] firstbytes = new byte[]{
+                GetShadeByte(data,0),
+                GetShadeByte(data,8)
+            };
+
+            ushort count = BitConverter.ToUInt16(firstbytes, 0);
+
             List<byte> result = new List<byte>();
-            for (int i = 0; i <= data.Count - 8; i += 8)
+            for (int i = 2; i < 2 + count; i++)
             {
-                byte value = GetShadeByte(data, i);
+                byte value = GetShadeByte(data, i * 8);
                 result.Add(value);
             }
 
@@ -27,9 +34,12 @@ namespace Shade.Objects
 
         public static void SetShadeBytes(IList<byte> data, IList<byte> shadebytes)
         {
-            for (int i = 0; i < shadebytes.Count; i++)
+            List<byte> buffer = new List<byte>();
+            buffer.AddRange(BitConverter.GetBytes(Convert.ToUInt16(shadebytes.Count)));
+            buffer.AddRange(shadebytes);
+            for (int i = 0; i < buffer.Count; i++)
             {
-                SetShadeByte(data, i * 8, shadebytes[i]);
+                SetShadeByte(data, i * 8, buffer[i]);
             }
         }
 

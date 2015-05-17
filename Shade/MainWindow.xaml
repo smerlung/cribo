@@ -2,7 +2,22 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" IsMainMenu="True">
+                <MenuItem Header="_File">
+                <MenuItem Header="_Open" Click="OpenClick"/>
+                <MenuItem Header="_Save" Click="SaveClick" />
+                <MenuItem Header="E_xit" Click="ExitClick"/>
+            </MenuItem>
+        </Menu>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Image Stretch="Uniform" Name="imageviewer"></Image>
+        <TextBox AcceptsReturn="True" TextWrapping="Wrap" Grid.Column="1" Name="texteditor"></TextBox>
     </Grid>
+    </DockPanel>
+
 </Window>
