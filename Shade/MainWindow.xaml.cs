@@ -115,7 +115,7 @@ namespace Shade
 
         private byte[] GetHash()
         {
-            byte[] hash = SimpleHash.Create(this.txtPassword.Text, this.salt);
+            byte[] hash = SimpleHash.Create(this.txtPassword.Password, this.salt);
             return hash;
         }
 

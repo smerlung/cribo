@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Shade.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525" WindowState="Maximized">
+        Title="Shade" Height="350" Width="525" WindowState="Maximized">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="20" />
@@ -17,7 +17,7 @@
                 <Button Click="EncryptClick">Encrypt</Button>
                 <Button Click="DecryptClick">Decrypt</Button>
                 <Button Click="ExitClick">Exit</Button>
-                <TextBox Name="txtPassword" Width="300" FontSize="20"></TextBox>
+                <PasswordBox Name="txtPassword" Width="300" FontSize="20"></PasswordBox>
             </StackPanel>
         </Border>
         <Grid>
