@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Shade.Views.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Shade" Height="350" Width="525" WindowState="Maximized">
+        Title="{Binding TitleText}" Height="350" Width="525" WindowState="Maximized">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="20" />

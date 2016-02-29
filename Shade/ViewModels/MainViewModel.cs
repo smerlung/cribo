@@ -6,6 +6,7 @@ using Shade.Views;
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -41,22 +42,6 @@ namespace Shade.ViewModels
             this.CommandExit = new CommandWithDelegates(this.Exit, () => true);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Fires the PropertyChanged event if anyone is listening.
-        /// It can be used to update bindings on a view. 
-        /// </summary>
-        /// <param name="propertyname">if null then all bindings will be updated</param>
-        public void FirePropertyChangedEvent(string propertyname)
-        {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyname));
-            }
-        }
-
         public bool IsUnsaved { get; set; }
 
         public string Data { get; set; }
@@ -76,6 +61,36 @@ namespace Shade.ViewModels
         public ICommand CommandExit { get; set; }
 
         public ImageSource SelectedImage { get; set; }
+
+        public string TitleText
+        {
+            get
+            {
+                var version = Assembly.GetExecutingAssembly().GetName().Version;
+                return string.Format(
+                    "Shade ({0},{1},{2}) - {3}", 
+                    version.Major,
+                    version.Minor,
+                    version.Revision,
+                    this.SelectedImagePath);
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Fires the PropertyChanged event if anyone is listening.
+        /// It can be used to update bindings on a view. 
+        /// </summary>
+        /// <param name="propertyname">if null then all bindings will be updated</param>
+        public void FirePropertyChangedEvent(string propertyname)
+        {
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyname));
+            }
+        }
 
         private void OpenImage(string imagepath)
         {
