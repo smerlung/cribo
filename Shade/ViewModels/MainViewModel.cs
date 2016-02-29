@@ -68,11 +68,10 @@ namespace Shade.ViewModels
             {
                 var version = Assembly.GetExecutingAssembly().GetName().Version;
                 return string.Format(
-                    "Shade ({0},{1},{2}) - {3}", 
+                    "Shade vs. {0}.{1}{2}", 
                     version.Major,
                     version.Minor,
-                    version.Revision,
-                    this.SelectedImagePath);
+                    string.IsNullOrEmpty(this.SelectedImagePath) ? string.Empty : " -> " + this.SelectedImagePath);
             }
         }
 
