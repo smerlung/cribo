@@ -3,16 +3,18 @@ using Shade.Commands;
 using Shade.Enumerations;
 using Shade.Objects;
 using Shade.Views;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Shade.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
         private byte[] buffer;
         private byte[] salt = UnicodeEncoding.UTF8.GetBytes("a");
@@ -22,7 +24,7 @@ namespace Shade.ViewModels
             this.State = State.Idle;
             this.IsUnsaved = false;
 
-            this.CommandOpen = new CommandWithDelegates(() => 
+            this.CommandOpen = new CommandWithDelegates(() =>
             {
                 OpenFileDialog dlg = new OpenFileDialog();
                 bool? result = dlg.ShowDialog();
@@ -32,15 +34,7 @@ namespace Shade.ViewModels
                 }
             }, () => true);
 
-            this.CommandSave = new CommandWithDelegates(() =>
-            {
-                OpenFileDialog dlg = new OpenFileDialog();
-                bool? result = dlg.ShowDialog();
-                if (result.HasValue && result.Value)
-                {
-                    this.SaveImage(dlg.FileName);
-                }
-            }, () => this.State == State.Encrypted && this.IsUnsaved);
+            this.CommandSave = new CommandWithDelegates(() => this.SaveImage(this.SelectedImagePath), () => this.State == State.Encrypted && this.IsUnsaved);
 
             this.CommandDecrypt = new CommandWithDelegates(this.Decrypt, () => this.State == State.Encrypted);
             this.CommandEncrypt = new CommandWithDelegates(this.Encrypt, () => this.State == State.Decrypted);
@@ -81,23 +75,22 @@ namespace Shade.ViewModels
 
         public ICommand CommandExit { get; set; }
 
-        public BitmapImage SelectedImage { get; set; }
+        public ImageSource SelectedImage { get; set; }
 
         private void OpenImage(string imagepath)
         {
             this.SelectedImagePath = imagepath;
-            using (FileStream fs = new FileStream(imagepath, FileMode.Open))
-            {
-                BitmapImage image = new BitmapImage();
-                image.BeginInit();
-                image.StreamSource = fs;
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.EndInit();
-                this.SelectedImage = image;
-            }
 
             byte[] data = ImageStream.GetImageBytes(imagepath);
             this.buffer = ShadeStream.GetShadeBytes(data);
+
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = new Uri(this.SelectedImagePath);
+            image.EndInit();
+            this.SelectedImage = image;
+
             this.State = State.Encrypted;
             this.UpdateText();
         }
@@ -131,6 +124,7 @@ namespace Shade.ViewModels
                 return;
             }
 
+            this.buffer = UnicodeEncoding.UTF8.GetBytes(this.Data);
             this.buffer = Crypto.Encrypt(this.buffer, this.GetHash(password));
             this.State = State.Encrypted;
             this.UpdateText();
@@ -145,7 +139,7 @@ namespace Shade.ViewModels
             }
 
             string password = PasswordView.GetPassword();
-            if(password == null)
+            if (password == null)
             {
                 return;
             }

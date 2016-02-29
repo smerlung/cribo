@@ -9,14 +9,41 @@
             <Setter Property="Padding" Value="5" />
         </Style>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Control" Key="O" Command="{Binding CommandOpen}" />
+        <KeyBinding Modifiers="Control" Key="S" Command="{Binding CommandSave}" />
+        <KeyBinding Modifiers="Control" Key="D" Command="{Binding CommandDecrypt}" />
+        <KeyBinding Modifiers="Control" Key="E" Command="{Binding CommandEncrypt}" />
+        <KeyBinding Modifiers="Alt" Key="F4" Command="{Binding CommandExit}" />
+    </Window.InputBindings>
     <DockPanel>
         <Border DockPanel.Dock="Top" BorderThickness="1" BorderBrush="Black">
             <StackPanel  Orientation="Horizontal">
-                <Button Command="{Binding CommandOpen}">Open</Button>
-                <Button Command="{Binding CommandSave}">Save</Button>
-                <Button Command="{Binding CommandEncrypt}">Encrypt</Button>
-                <Button Command="{Binding CommandDecrypt}">Decrypt</Button>
-                <Button Command="{Binding CommandExit}">Exit</Button>
+                <Button Command="{Binding CommandOpen}">Open
+                    <Button.ToolTip>
+                        <TextBlock>Ctrl + O</TextBlock>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="{Binding CommandSave}">Save
+                    <Button.ToolTip>
+                        <TextBlock>Ctrl + S</TextBlock>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="{Binding CommandEncrypt}">Encrypt
+                    <Button.ToolTip>
+                        <TextBlock>Ctrl + E</TextBlock>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="{Binding CommandDecrypt}">Decrypt
+                    <Button.ToolTip>
+                        <TextBlock>Ctrl + D</TextBlock>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="{Binding CommandExit}">Exit
+                    <Button.ToolTip>
+                        <TextBlock>Alt + F4</TextBlock>
+                    </Button.ToolTip>
+                </Button>
             </StackPanel>
         </Border>
         <Grid>
@@ -24,8 +51,8 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Image Stretch="Uniform" Source="{Binding SelectedImagePath}"></Image>
-            <TextBox AcceptsReturn="True" TextWrapping="Wrap" Grid.Column="1" Text="{Binding Data}"></TextBox>
+            <Image Stretch="Uniform" Source="{Binding SelectedImage}"></Image>
+            <TextBox AcceptsReturn="True" TextWrapping="Wrap" Grid.Column="1" Text="{Binding Data, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         </Grid>
     </DockPanel>
 
