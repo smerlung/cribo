@@ -15,6 +15,11 @@
         <KeyBinding Modifiers="Control" Key="D" Command="{Binding CommandDecrypt}" />
         <KeyBinding Modifiers="Control" Key="E" Command="{Binding CommandEncrypt}" />
         <KeyBinding Modifiers="Alt" Key="F4" Command="{Binding CommandExit}" />
+        <KeyBinding Modifiers="Control" Key="D1" Command="{Binding CommandOpenRecent}" CommandParameter="1" />
+        <KeyBinding Modifiers="Control" Key="D2" Command="{Binding CommandOpenRecent}" CommandParameter="2" />
+        <KeyBinding Modifiers="Control" Key="D3" Command="{Binding CommandOpenRecent}" CommandParameter="3" />
+        <KeyBinding Modifiers="Control" Key="D4" Command="{Binding CommandOpenRecent}" CommandParameter="4" />
+        <KeyBinding Modifiers="Control" Key="D5" Command="{Binding CommandOpenRecent}" CommandParameter="5" />
     </Window.InputBindings>
     <DockPanel>
         <Border DockPanel.Dock="Top" BorderThickness="1" BorderBrush="Black">
@@ -23,6 +28,14 @@
                     <Button.ToolTip>
                         <TextBlock>Ctrl + O</TextBlock>
                     </Button.ToolTip>
+                </Button>
+                <Button>Recent
+                    <Button.ToolTip>
+                        <TextBlock>Ctrl + #</TextBlock>
+                    </Button.ToolTip>
+                    <Button.ContextMenu>
+                        <ContextMenu ItemsSource="{Binding RecentFiles}" />
+                    </Button.ContextMenu>
                 </Button>
                 <Button Command="{Binding CommandSave}">Save
                     <Button.ToolTip>
