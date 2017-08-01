@@ -66,13 +66,22 @@
         {
             int number = 1;
             var menuitems = Settings.Default.GetRecentFiles()
-                .Select(n => new MenuItem()
-                {
-                    Icon = new TextBlock() { Text = number.ToString() },
-                    Header = string.Format("({0}) {1}", n.Type, Path.Combine(n.FileDirectory, n.FileName)),
-                    Command = this.CommandOpenRecent,
-                    CommandParameter = number++,
-                })
+                .Select(n =>
+                    {
+                        try
+                        {
+                            return new MenuItem()
+                                {
+                                    Icon = new TextBlock() { Text = number.ToString() },
+                                    Header = string.Format("({0}) {1}", n.Type, Path.Combine(n.FileDirectory, n.FileName)),
+                                    Command = this.CommandOpenRecent,
+                                    CommandParameter = number++,
+
+                                };
+                        }
+                        catch { return null; }
+                    })
+                .Where(n => n!= null)
                 .ToList();
 
             this.RecentFiles = new ObservableCollection<MenuItem>(menuitems);
@@ -185,7 +194,7 @@
 
         private void SaveImage(RecentFile recentfile)
         {
-            if(recentfile.Type == RecentFileType.Local)
+            if (recentfile.Type == RecentFileType.Local)
             {
                 this.SaveImageLocal(recentfile.GetFilePath());
             }

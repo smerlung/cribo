@@ -31,7 +31,7 @@
                 </Button>
                 <Button>Recent
                     <Button.ToolTip>
-                        <TextBlock>Ctrl + #</TextBlock>
+                        <TextBlock>Ctrl + # (where # is the number in the recent file list)</TextBlock>
                     </Button.ToolTip>
                     <Button.ContextMenu>
                         <ContextMenu ItemsSource="{Binding RecentFiles}" />
