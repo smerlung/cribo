@@ -1,0 +1,74 @@
+﻿<Window x:Class="Cribo.Views.FileSelectorView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        SizeToContent="WidthAndHeight"
+        Title="FileSelectorView" Height="300" Width="300"
+        Loaded="Window_Loaded">
+    <DockPanel>
+        <Button DockPanel.Dock="Bottom" Click="Open_Click">Open</Button>
+        <GroupBox DockPanel.Dock="Top" Header="Type">
+            <StackPanel Orientation="Horizontal">
+                <RadioButton Name="rdolocal" Checked="rdoLocalFile">Local</RadioButton>
+                <RadioButton Checked="rdoFtpFile">Ftp</RadioButton>
+            </StackPanel>
+        </GroupBox>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <GroupBox Name="gridLocal" Header="Local">
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0" Click="Browse_Click">File...</Button>
+                    <TextBlock Grid.Row="0" Grid.Column="1">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0}/{1}">
+                                <Binding Path="FileDirectory" />
+                                <Binding Path="FileName" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Grid>
+            </GroupBox>
+            <GroupBox Name="gridFtp" Header="Ftp" Grid.Row="1">
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0">File directory</TextBlock>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FileDirectory}" />
+                    <TextBlock Grid.Row="1">File name</TextBlock>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FileName}" />
+                    <TextBlock Grid.Row="2">Host</TextBlock>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FtpHostName}" />
+                    <TextBlock Grid.Row="3">Port</TextBlock>
+                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding FtpPort}" />
+                    <TextBlock Grid.Row="4">Username</TextBlock>
+                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding FtpUserName}" />
+                    <TextBlock Grid.Row="5">Password</TextBlock>
+                    <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding FtpPassword}" />
+
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+    </DockPanel>
+</Window>
