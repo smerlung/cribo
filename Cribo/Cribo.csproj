@@ -63,6 +63,7 @@
     <Compile Include="Enumerations\RecentFileType.cs" />
     <Compile Include="Enumerations\State.cs" />
     <Compile Include="Extensions\ExtensionsSerialization.cs" />
+    <Compile Include="Objects\DictionarySerializable.cs" />
     <Compile Include="Objects\Ftp.cs" />
     <Compile Include="Objects\RecentFile.cs" />
     <Compile Include="Objects\Settings.cs" />
