@@ -74,6 +74,7 @@
     <Compile Include="Objects\Settings.cs" />
     <Compile Include="Objects\SettingsBase.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\FileSelectorView.xaml.cs">
       <DependentUpon>FileSelectorView.xaml</DependentUpon>
     </Compile>

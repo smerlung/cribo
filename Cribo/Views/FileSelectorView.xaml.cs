@@ -52,7 +52,7 @@ namespace Cribo.Views
             {
                 this.File.FileDirectory = System.IO.Path.GetDirectoryName(dlg.FileName);
                 this.File.FileName = System.IO.Path.GetFileName(dlg.FileName);
-                this.File.FirePropertyChanged();
+                this.File.FirePropertyChangedEvent();
             }
         }
 

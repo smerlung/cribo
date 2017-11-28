@@ -18,7 +18,7 @@
     using System.Windows.Media.Imaging;
     using System.Linq;
 
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : ViewModelBase
     {
         private byte[] buffer;
         private byte[] salt = UnicodeEncoding.UTF8.GetBytes("a");
@@ -124,22 +124,6 @@
                     version.Major,
                     version.Minor,
                     string.IsNullOrEmpty(this.SelectedImagePath) ? string.Empty : " -> " + this.SelectedImagePath);
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Fires the PropertyChanged event if anyone is listening.
-        /// It can be used to update bindings on a view. 
-        /// </summary>
-        /// <param name="propertyname">if null then all bindings will be updated</param>
-        public void FirePropertyChangedEvent(string propertyname)
-        {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyname));
             }
         }
 

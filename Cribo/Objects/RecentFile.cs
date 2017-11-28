@@ -1,6 +1,7 @@
 ﻿namespace Cribo.Objects
 {
     using Cribo.Enumerations;
+    using Cribo.ViewModels;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -9,7 +10,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public class RecentFile : INotifyPropertyChanged
+    public class RecentFile : ViewModelBase
     {
         public RecentFileType Type { get; set; }
 
@@ -24,16 +25,6 @@
         public string FtpUserName { get; set; }
 
         public int FtpPort { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void FirePropertyChanged(string property = "")
-        {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
-        }
 
         public string GetFilePath()
         {
