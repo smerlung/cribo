@@ -70,6 +70,7 @@
     <Compile Include="Objects\Page.cs" />
     <Compile Include="Objects\Repository.cs" />
     <Compile Include="Objects\RecentFile.cs" />
+    <Compile Include="Objects\Serializer.cs" />
     <Compile Include="Objects\Settings.cs" />
     <Compile Include="Objects\SettingsBase.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

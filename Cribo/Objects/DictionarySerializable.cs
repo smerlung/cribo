@@ -6,7 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public class DictionarySerializable<TKey, TValue>
+    public class DictionarySerializable<TKey, TValue> //: IEnumerable<KeyValuePair<TKey, TValue>>
     {
         private bool isdictionaryupdated = true;
 
@@ -58,6 +58,24 @@
                 this.dictionary = Enumerable.Range(0, this.keys.Count).ToDictionary(i => this.keys[i], i => this.values[i]);
                 this.isdictionaryupdated = true;
             }
+        }
+
+        public Dictionary<TKey, TValue> ToDictionary()
+        {
+            var result = new Dictionary<TKey, TValue>();
+            for (int i = 0; i < this.Keys.Count; i++)
+            {
+                result.Add(this.Keys[i], this.Values[i]);
+            }
+
+            return result;
+        }
+
+        public static DictionarySerializable<TKey, TValue> FromDictionary(Dictionary<TKey, TValue> dictionary)
+        {
+            var result = new DictionarySerializable<TKey, TValue>();
+            dictionary.ToList().ForEach(n => result.Add(n.Key, n.Value));
+            return result;
         }
     }
 }
