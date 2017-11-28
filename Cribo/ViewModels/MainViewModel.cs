@@ -5,6 +5,7 @@
     using Cribo.Enumerations;
     using Cribo.Objects;
     using Cribo.Views;
+    using Cribo.Extensions;
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
@@ -22,9 +23,11 @@
     {
         private byte[] buffer;
         private byte[] salt = UnicodeEncoding.UTF8.GetBytes("a");
+        private bool enablerawview = true;
 
         public MainViewModel()
         {
+            this.ImageOpacity = 1.0;
             this.State = State.Idle;
             this.IsUnsaved = false;
 
@@ -60,6 +63,8 @@
             this.CommandDecrypt = new CommandWithDelegates(this.Decrypt, () => this.State == State.Encrypted);
             this.CommandEncrypt = new CommandWithDelegates(this.Encrypt, () => this.State == State.Decrypted);
             this.CommandExit = new CommandWithDelegates(this.Exit, () => true);
+
+            this.CommandInitializeNewRepository = new CommandWithDelegates(this.InitializePages, () => this.State == State.Decrypted);
         }
 
         private void InitializeRecentFiles()
@@ -81,24 +86,44 @@
                         }
                         catch { return null; }
                     })
-                .Where(n => n!= null)
+                .Where(n => n != null)
                 .ToList();
 
             this.RecentFiles = new ObservableCollection<MenuItem>(menuitems);
             this.FirePropertyChangedEvent("RecentFiles");
         }
 
+        public bool EnableRawView { get { return this.enablerawview; } set { this.enablerawview = value; this.FirePropertyChangedEvent(); } }
+
+        public Visibility DatabaseViewVisibility { get { return this.EnableRawView ? Visibility.Collapsed : Visibility.Visible; } }
+
+        public Visibility RawViewVisibility { get { return !this.EnableRawView ? Visibility.Collapsed : Visibility.Visible; } }
+
+        public DatabaseViewModel DatabaseViewModel { get { return App.Get<DatabaseViewModel>(); } }
+
+        public double ImageOpacity { get; set; }
+
         public bool IsUnsaved { get; set; }
 
         public ObservableCollection<MenuItem> RecentFiles { get; set; }
 
-        public string Data { get; set; }
+        private string text = null;
+
+        public string Text { get { return this.text; } set { this.text = value; this.TextChanged(); } }
+
+        private void TextChanged()
+        {
+        }
 
         public string SelectedImagePath { get; set; }
 
         public RecentFile CurrentFile { get; set; }
 
         public State State { get; set; }
+
+        public ICommand CommandInitializeNewRepository { get; set; }
+
+        public ICommand CommandToggleRawView { get; set; }
 
         public ICommand CommandOpen { get; set; }
 
@@ -157,8 +182,8 @@
             this.SelectedImage = image;
 
             this.State = State.Encrypted;
-            this.UpdateText();
-
+            this.Text = UnicodeEncoding.UTF8.GetString(this.buffer);
+            this.FirePropertyChangedEvent();
         }
 
         private void OpenImageFtp(RecentFile imagepath)
@@ -228,10 +253,13 @@
                 return;
             }
 
-            this.buffer = UnicodeEncoding.UTF8.GetBytes(this.Data);
-            this.buffer = Crypto.Encrypt(this.buffer, this.GetHash(password));
+            var jsonbuffer = UnicodeEncoding.UTF8.GetBytes(this.DatabaseViewModel.GetJson());
+            this.buffer = Crypto.Encrypt(jsonbuffer, this.GetHash(password));
+            this.IsUnsaved = true;
+            this.Text = UnicodeEncoding.UTF8.GetString(this.buffer);
+            this.DatabaseViewModel.Clear();
+            this.EnableRawView = true;
             this.State = State.Encrypted;
-            this.UpdateText();
         }
 
         private void Decrypt()
@@ -249,8 +277,11 @@
             }
 
             this.buffer = Crypto.Decrypt(this.buffer, this.GetHash(password));
-            this.State = State.Decrypted;
-            this.UpdateText();
+            if (this.DatabaseViewModel.SetJson(UnicodeEncoding.UTF8.GetString(this.buffer)))
+            {
+                this.State = State.Decrypted;
+                this.EnableRawView = false;
+            }
         }
 
         private void Exit()
@@ -264,11 +295,13 @@
             return hash;
         }
 
-        private void UpdateText()
+        private void InitializePages()
         {
-            this.Data = UnicodeEncoding.UTF8.GetString(this.buffer);
-            this.IsUnsaved = true;
-            this.FirePropertyChangedEvent(null);
+            var result = MessageBox.Show("This will overwrite the existing database.", "Warning", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                this.EnableRawView = false;
+            }
         }
     }
 }
