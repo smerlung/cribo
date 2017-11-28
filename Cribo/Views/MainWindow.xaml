@@ -52,6 +52,8 @@
                         <TextBlock>Ctrl + D</TextBlock>
                     </Button.ToolTip>
                 </Button>
+                <Button Command="{Binding CommandInitializeNewRepository}">Init DB</Button>
+                <ToggleButton IsChecked="{Binding EnableRawView}">Raw</ToggleButton>
                 <Button Command="{Binding CommandExit}">Exit
                     <Button.ToolTip>
                         <TextBlock>Alt + F4</TextBlock>
@@ -65,7 +67,35 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Image Stretch="Uniform" Source="{Binding SelectedImage}"></Image>
-            <TextBox AcceptsReturn="True" TextWrapping="Wrap" Grid.Column="1" Text="{Binding Data, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBox AcceptsReturn="True" TextWrapping="Wrap" Grid.Column="1" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding RawViewVisibility}"></TextBox>
+            <Grid Grid.Column="1" Visibility="{Binding DatabaseViewVisibility}">
+                <DockPanel DataContext="{Binding DatabaseViewModel}" >
+                    <DockPanel DockPanel.Dock="Left">
+                        <StackPanel DockPanel.Dock="Top">
+                            <Button Command="{Binding CommandAddNewPage}">+</Button>
+                        </StackPanel>
+                        <ListView ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+                        </ListView>
+                    </DockPanel>
+                    <DockPanel>
+                        <Button DockPanel.Dock="Top">+</Button>
+                        <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedItem.Key}" />
+
+                        <ListView ItemsSource="{Binding SelectedItem.Items}">
+                            <!--<ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Black" BorderThickness="2">
+                                        <StackPanel Orientation="">
+                                            <TextBlock Text="{Binding Path=Value}" />
+                                            <TextBlock Text="{Binding Path=Key}" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>-->
+                        </ListView>
+                    </DockPanel>
+                </DockPanel>
+            </Grid>
         </Grid>
     </DockPanel>
 

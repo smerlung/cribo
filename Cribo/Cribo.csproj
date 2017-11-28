@@ -63,11 +63,19 @@
     <Compile Include="Enumerations\RecentFileType.cs" />
     <Compile Include="Enumerations\State.cs" />
     <Compile Include="Extensions\ExtensionsSerialization.cs" />
+    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Objects\DictionarySerializable.cs" />
     <Compile Include="Objects\Ftp.cs" />
+    <Compile Include="Objects\Page.cs" />
+    <Compile Include="Objects\Repository.cs" />
     <Compile Include="Objects\RecentFile.cs" />
+    <Compile Include="Objects\Serializer.cs" />
     <Compile Include="Objects\Settings.cs" />
     <Compile Include="Objects\SettingsBase.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\DatabaseViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\FileSelectorView.xaml.cs">
       <DependentUpon>FileSelectorView.xaml</DependentUpon>
     </Compile>
@@ -78,8 +86,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\PageView.xaml.cs">
+      <DependentUpon>PageView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PasswordView.xaml.cs">
       <DependentUpon>PasswordView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RepositoryView.xaml.cs">
+      <DependentUpon>RepositoryView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\FileSelectorView.xaml">
       <SubType>Designer</SubType>
@@ -89,7 +103,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\PageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PasswordView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RepositoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

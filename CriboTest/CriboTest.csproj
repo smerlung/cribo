@@ -54,6 +54,9 @@
     <Compile Include="Tests\CriboStreamTest.cs" />
     <Compile Include="Tests\SimpleHashTest.cs" />
     <Compile Include="Tests\CryptoTest.cs" />
+    <Compile Include="Tests\DictionarySerializableTest.cs" />
+    <Compile Include="Tests\RepositoryTest.cs" />
+    <Compile Include="Tests\SerializerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cribo\Cribo.csproj">

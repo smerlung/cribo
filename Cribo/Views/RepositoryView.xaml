@@ -1,0 +1,35 @@
+﻿<Window x:Class="Cribo.Views.RepositoryView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RepositoryView" Height="300" Width="300">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Left">
+            <StackPanel DockPanel.Dock="Top">
+                <Button Command="{Binding CommandAddNewPage}">+</Button>
+            </StackPanel>
+            <ListView ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+            </ListView>
+        </DockPanel>
+        <DockPanel>
+            <Button DockPanel.Dock="Top">+</Button>
+            <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedItem.Title}" />
+
+            <ListView ItemsSource="{Binding SelectedItem.Items}">
+                <!--<ListView.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel>
+                            <TextBlock Text="Name: " />
+                            <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                            <TextBlock Text=", " />
+                            <TextBlock Text="Age: " />
+                            <TextBlock Text="{Binding Age}" FontWeight="Bold" />
+                            <TextBlock Text=" (" />
+                            <TextBlock Text="{Binding Mail}" TextDecorations="Underline" Foreground="Blue" Cursor="Hand" />
+                            <TextBlock Text=")" />
+                        </WrapPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>-->
+            </ListView>
+        </DockPanel>
+    </DockPanel>
+</Window>
